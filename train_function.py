@@ -5,7 +5,7 @@ import theano.tensor as T
 
 
 class TrainFunction(object):
-    def __init__(self, u0, v0, rate):
+    def __init__(self, u0, v0, rate, num_steps):
         self.rate = rate
         self.tu = theano.shared(u0, name='tu')
         self.tv = theano.shared(v0, name='tv')
@@ -15,7 +15,12 @@ class TrainFunction(object):
 
         self.gu, self.gv = None, None
         self.E = None
+        self.count = 0
+        self.num_steps = num_steps
         self.train_function = self.get_function()
+
+    def done(self):
+        return self.count >= self.num_steps
 
     def get_energy(self):
         raise Exception("Non implemented")
@@ -36,10 +41,12 @@ class TrainFunction(object):
         return train_function
 
     def init(self, u0, v0):
+        self.count = 0
         self.tu.set_value(u0)
         self.tv.set_value(v0)
 
     def step(self, *args):
+        self.count += 1
         return self.train_function(*args)
 
 

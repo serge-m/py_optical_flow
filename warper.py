@@ -6,7 +6,7 @@ from pyinterp2.interp2 import interp2linear
 from scipy import ndimage
 from train_function import TrainFunctionSimple
 class Warper:
-    def __init__(self, shape, u0, v0, I0, I1, display = False):
+    def __init__(self, shape, u0, v0, I0, I1, train_function = None, display = False):
         """
             shape - shape of input function,
             u0, v0 - starting values of flow
@@ -21,7 +21,10 @@ class Warper:
         self.counter = 0
         self.I0, self.I1 = I0.copy(), I1.copy()
 
-        self.train = TrainFunctionSimple(u0, v0, rate=0.1)
+        if train_function is None:
+            train_function = TrainFunctionSimple(u0, v0, rate=0.1, num_steps = 120)
+            
+        self.train = train_function
 
     # I0 - compensate to it
     def warp(self):
@@ -62,7 +65,7 @@ class Warper:
         self.It = It
 
         self.train.init(np.zeros_like(self.I0), np.zeros_like(self.I0))
-        for i_sgd in range(120):
+        while not self.train.done():
             e = self.train.step(Ix, Iy, It)
             if self.display:
                 print e,
