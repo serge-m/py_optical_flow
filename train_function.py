@@ -5,7 +5,7 @@ import theano.tensor as T
 
 
 class TrainFunction(object):
-    def __init__(self, u0, v0, rate, num_steps):
+    def __init__(self, u0, v0, rate, num_steps, **kwargs):
         self.rate = rate
         self.tu = theano.shared(u0, name='tu')
         self.tv = theano.shared(v0, name='tv')
