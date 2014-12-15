@@ -41,7 +41,7 @@ class Warper:
             #plt.figure()
             #plt.imshow(I1warped)
             print "I1warped", I1warped
-            print "I0", I0
+            print "I0", self.I0
             print "u0", u0
             print "v0", v0
             pass
@@ -49,8 +49,7 @@ class Warper:
         It = I1warped - self.I0
         if self.display:
             print "It", It
-            print "I1warped", I1warped
-
+            
         Ix = ndimage.correlate(self.I1, self.mask, mode='nearest')
         Iy = ndimage.correlate(self.I1, self.mask.T, mode='nearest')
 
