@@ -58,14 +58,24 @@ class TrainFunctionSimple(TrainFunction):
 
     def get_energy(self,):
         Edata = T.sum((self.tIx * self.tu + self.tIy * self.tv + self.tIt) ** 2)
-#         Ereg1 = T.sum(
-#             (self.tu[1:]-self.tu[:-1])**2 +
-#             (self.tv[1:]-self.tv[:-1])**2 )
-#         Ereg2 = T.sum(
-#             (self.tu[:,1:]-self.tu[:,:-1]) **2 +
-#             (self.tv[:,1:]-self.tv[:,:-1]) ** 2)
-
+        
         Ereg1 = T.sum(self.tu**2 + self.tv**2)
-        Ereg2 = 0
-        #+alpha*(Ereg1+Ereg2)
-        return Edata+self.alpha*(Ereg1+Ereg2)
+        return Edata+self.alpha*(Ereg1)   
+
+
+class TrainFunctionTV(TrainFunction):
+    def __init__(self, *args, **kwargs):
+        self.alpha = kwargs.get('alpha', 1.1)
+
+        super(self.__class__, self).__init__(*args, **kwargs)
+
+    def get_energy(self,):
+        Edata = T.sum((self.tIx * self.tu + self.tIy * self.tv + self.tIt) ** 2)
+        Ereg1 = T.sum(
+            (self.tu[1:]-self.tu[:-1])**2 +
+            (self.tv[1:]-self.tv[:-1])**2 )
+        Ereg2 = T.sum(
+            (self.tu[:,1:]-self.tu[:,:-1]) **2 +
+            (self.tv[:,1:]-self.tv[:,:-1]) ** 2)
+
+        return Edata+self.alpha*(Ereg1+Ereg2)   
