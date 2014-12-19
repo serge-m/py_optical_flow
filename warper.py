@@ -2,6 +2,7 @@ __author__ = 'Sergey Matyunin'
 
 
 import numpy as np
+import numpy
 from pyinterp2.interp2 import interp2linear
 from scipy import ndimage
 from train_function import TrainFunctionSimple
@@ -36,6 +37,9 @@ class Warper:
         idxx = self.idx + u0
         idyy = self.idy + v0
 
+        idxx = np.clip(idxx, 0, self.N-1)
+        idyy = np.clip(idyy, 0, self.M-1)
+
         I1warped = interp2linear(self.I1, idxx, idyy)
         if self.display:
             #plt.figure()
@@ -50,8 +54,8 @@ class Warper:
         if self.display:
             print "It", It
             
-        Ix = ndimage.correlate(self.I1, self.mask, mode='nearest')
-        Iy = ndimage.correlate(self.I1, self.mask.T, mode='nearest')
+        Ix = ndimage.correlate(I1warped, self.mask, mode='nearest')
+        Iy = ndimage.correlate(I1warped, self.mask.T, mode='nearest')
 
         # boundary handling
         m = (idxx > self.N - 1) | (idxx < 0) | (idyy > self.M - 1) | (idyy < 0)
