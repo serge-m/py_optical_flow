@@ -78,6 +78,8 @@ class Warper:
                 print e,
             cnt_step += 1
 
+        if self.display:
+            print # finish line
 
 
         self.u += self.train.tu.get_value()
