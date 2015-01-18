@@ -29,6 +29,10 @@ def construct_image_pyramid(I, pyrlevels, pyrfactor):
 
 class MultiscaleOF:
     def __init__(self, I0, I1, pyrlevels, pyrfactor, num_warps, train_function_args=dict(rate=0.1, num_steps = 1000, alpha = 0.1), class_train_function = TrainFunctionTV):
+
+        if pyrfactor > 1 or pyrfactor <= 0:
+            raise Exception("pyrfactor is out range (0, 1)")
+
         self.pyrlevels = pyrlevels
         self.pyrfactor = pyrfactor
         self.I0pyr = construct_image_pyramid(I0.astype(theano.config.floatX), self.pyrlevels, self.pyrfactor)
