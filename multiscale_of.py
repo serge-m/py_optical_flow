@@ -28,12 +28,12 @@ def construct_image_pyramid(I, pyrlevels, pyrfactor):
     return pyr
 
 class MultiscaleOF:
-    def __init__(self, I0, I1, pyrlevels, pyrfactor, train_function_args=dict(rate=0.1, num_steps = 1000, alpha = 0.1), class_train_function = TrainFunctionTV):
+    def __init__(self, I0, I1, pyrlevels, pyrfactor, num_warps, train_function_args=dict(rate=0.1, num_steps = 1000, alpha = 0.1), class_train_function = TrainFunctionTV):
         self.pyrlevels = pyrlevels
         self.pyrfactor = pyrfactor
         self.I0pyr = construct_image_pyramid(I0.astype(theano.config.floatX), self.pyrlevels, self.pyrfactor)
         self.I1pyr = construct_image_pyramid(I1.astype(theano.config.floatX), self.pyrlevels, self.pyrfactor)
-        self.warps = 10
+        self.warps = num_warps
         self.u = None
         self.v = None
         self.train_function_args = train_function_args
