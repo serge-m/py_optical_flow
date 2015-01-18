@@ -60,7 +60,7 @@ class MultiscaleOF:
         I0_ = self.I0pyr[level]
         I1_ = self.I1pyr[level]
 
-        print I1_.shape, u0.shape, self.I0pyr[level].shape
+        #print I1_.shape, u0.shape, self.I0pyr[level].shape
         wrpr = Warper(I0_.shape, u0, v0, I0_, I1_,
                       train_function=self.class_train_function(u0, v0, **self.train_function_args), display=0)
 
