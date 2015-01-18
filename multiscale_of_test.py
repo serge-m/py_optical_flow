@@ -38,8 +38,8 @@ I0 = rgb2gray(I0color)
 I1 = rgb2gray(I1color)
 
 import scipy.misc
-I0 = scipy.misc.imresize(I0, 2.25)
-I1 = scipy.misc.imresize(I1, 2.25)
+#I0 = scipy.misc.imresize(I0, 2.25)
+#I1 = scipy.misc.imresize(I1, 2.25)
 print I0.shape
 
 I0 = I0 / 255.
