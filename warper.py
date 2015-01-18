@@ -6,6 +6,8 @@ import numpy
 from pyinterp2.interp2 import interp2linear
 from scipy import ndimage
 from train_function import TrainFunctionSimple
+import theano 
+
 class Warper:
     def __init__(self, shape, u0, v0, I0, I1, train_function = None, display = False, intermediate_saver = None):
         """
@@ -15,12 +17,12 @@ class Warper:
 
         """
         self.M, self.N = shape[0], shape[1]
-        self.u, self.v = u0.copy(), v0.copy()
+        self.u, self.v = u0.copy().astype(theano.config.floatX), v0.copy().astype(theano.config.floatX)
         self.idx, self.idy = np.meshgrid(np.arange(self.N), np.arange(self.M))
-        self.mask = np.array([1, -8, 0, 8, -1], ndmin=2)/12.0
+        self.mask = np.array([1, -8, 0, 8, -1], ndmin=2, dtype=theano.config.floatX)/12.0
         self.display = display
         self.counter = 0
-        self.I0, self.I1 = I0.copy(), I1.copy()
+        self.I0, self.I1 = I0.copy().astype(theano.config.floatX), I1.copy().astype(theano.config.floatX)
         self._intermediate_saver = intermediate_saver
 
         if train_function is None:
@@ -41,7 +43,7 @@ class Warper:
         idxx = np.clip(idxx, 0, self.N-1)
         idyy = np.clip(idyy, 0, self.M-1)
 
-        I1warped = interp2linear(self.I1, idxx, idyy)
+        I1warped = interp2linear(self.I1, idxx, idyy).astype(theano.config.floatX)
         if self.display:
             #plt.figure()
             #plt.imshow(I1warped)
