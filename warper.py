@@ -73,7 +73,7 @@ class Warper:
         self.train.init(np.zeros_like(self.I0), np.zeros_like(self.I0), Ix, Iy, It)
         cnt_step = 0
         while not self.train.done():
-            e = self.train.step(Ix, Iy, It)[0]
+            e = self.train.step()[0]
             if self.display and (cnt_step % 10 == 0 or self.train.done()):
                 print e,
             cnt_step += 1
